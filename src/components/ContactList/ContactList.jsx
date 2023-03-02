@@ -1,14 +1,27 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { ContactListItem } from './ContactListItem/ContactListItem';
+
+import { fetchAllContacts } from 'redux/contacts/contactsOperations';
+import { selectFilter } from 'redux/filter/filterSelectors';
+import { selectAllContacts } from 'redux/contacts/contactsSelectors';
+
 import styles from './ContactList.module.css';
 
 export const ContactList = () => {
-  const contacts = useSelector(store => store.contacts);
-  const filter = useSelector(store => store.filter);
+  const contacts = useSelector(selectAllContacts);
+  const setFilter = useSelector(selectFilter);
+  
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch( fetchAllContacts );
+  }, [ dispatch ] );
 
   const filterContacts = () => {
-    const normalizedFilter = filter.toLowerCase();
+    const normalizedFilter = setFilter.toLowerCase();
+    console.log( contacts );
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
@@ -18,9 +31,9 @@ export const ContactList = () => {
 
   return (
     <ul className={styles.ul}>
-      {list.map(({ id, name, number }) => {
+      {list.map(({ id, name, phone }) => {
         return (
-          <ContactListItem key={id} name={name} number={number} nameId={id} />
+          <ContactListItem key={id} name={name} phone={phone} nameId={id} />
         );
       })}
     </ul>

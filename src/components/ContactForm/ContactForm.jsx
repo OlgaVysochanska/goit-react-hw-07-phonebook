@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import styles from './ContactForm.module.css';
 
-import { addContact } from 'redux/contacts/contactsSlice';
+import { fetchAddContact } from 'redux/contacts/contactsOperations';
 
 export const ContactForm = () => {
   let inputValues = {
@@ -9,7 +9,7 @@ export const ContactForm = () => {
     number: '',
   };
 
-  const contacts = useSelector(store => store.contacts);
+  const contacts = useSelector(store => store.contacts.items);
   const dispatch = useDispatch();
 
   const onChangingInput = e => {
@@ -25,8 +25,8 @@ export const ContactForm = () => {
       return;
     }
 
-    const number = data.number;
-    const action = addContact({ name, number });
+    const phone = data.number;
+    const action = fetchAddContact({ name, phone });
     dispatch(action);
   };
 
