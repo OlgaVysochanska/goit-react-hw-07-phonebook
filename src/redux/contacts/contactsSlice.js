@@ -17,6 +17,7 @@ const contactsSlice = createSlice({
     builder
       .addCase(fetchAllContacts.pending, store => {
         store.isLoading = true;
+        store.error = null;
       })
       .addCase(fetchAllContacts.fulfilled, (store, { payload }) => {
         store.isLoading = false;
@@ -28,6 +29,7 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchAddContact.pending, store => {
         store.isLoading = true;
+        store.error = null;
       })
       .addCase(fetchAddContact.fulfilled, (store, { payload }) => {
         store.isLoading = false;
@@ -39,11 +41,11 @@ const contactsSlice = createSlice({
       })
       .addCase(fetchDeleteContact.pending, store => {
         store.isLoading = true;
+        store.error = null;
       })
       .addCase(fetchDeleteContact.fulfilled, (store, { payload }) => {
         store.isLoading = false;
-        const index = store.items.findIndex(item => item.id === payload);
-        store.items.splice(index, 1);
+        store.items = store.items.filter(item => item.id !== payload);
       })
       .addCase(fetchDeleteContact.rejected, (store, { payload }) => {
         store.isLoading = false;
